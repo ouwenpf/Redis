@@ -1,0 +1,54 @@
+#!/bin/bash
+#############################################
+# Functions: start & stop redis cluster node
+############################################
+# set -x #DEBUG
+
+REDIS_BIN_DIR="/mysql/data/redis/bin"
+REDIS_CLUSTER_DIR="/mysql/data/redis/redis-cluster"
+REDIS_CLI="$REDIS_BIN_DIR/redis-cli"
+REDIS_SERVER="$REDIS_BIN_DIR/redis-server"
+
+REDIS_USER="redis"
+REDIS_PORT=7002
+REDIS_IP=192.168.1.51
+REDIS_NAME="redis-$REDIS_PORT"
+REDIS_CONFIG="/mysql/data/redis/redis-cluster/nodes-$REDIS_PORT/redis.conf"
+REDIS_PASS="itpux123"
+
+start() {
+    [ -f $REDIS_CONFIG ] || exit 6
+    [ -x $REDIS_SERVER ] || exit 5
+    echo -n $"Starting $REDIS_NAME: "
+    $REDIS_SERVER $REDIS_CONFIG
+    retval=$?
+    [ $retval -eq 0 ] && echo " $REDIS_NAME start succeed!"
+}
+
+stop() {
+    echo -n $"Stopping $REDIS_NAME: "
+	$REDIS_CLI -p $REDIS_PORT -h $REDIS_IP -a $REDIS_PASS shutdown 
+#   retval=$?
+#    [ $retval -eq 0 ] && echo " $REDIS_NAME stop succeed!"    
+}
+
+restart() {
+    stop
+    start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 2
+esac
+exit $?

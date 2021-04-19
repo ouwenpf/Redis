@@ -145,22 +145,29 @@ repl_backlog_histlen:2296
 3. 故障迁移:自动主从切换
 4. 统一配置管理:连接者询问sentinel取得主从地址
 
-
-
-设置配置文件sentinel.conf
 sentinel monitor mymaster 10.0.10.11 6379 2 #mymaster别名,10.0.10.11 6379主节点的地址和端口,2表示投票的数量(sentinel/2+1)
 sentinel down-after-millseconds mymaster 10000 #10秒主节点还未响应认为主节点挂掉
 sentinel parallel-syncs mymaster 1 #主从切换后,并行同步机器的数量
 sentinel failover-timeout-mymaster 15000 #15主节点还没有活过来,进行切换
 sentinel auth-pass mymaster 123456 #哨兵验证主节点需要密码
+bind 10.0.10.11 哨兵所在的服务器的ip
+----------------------------------------------------------------------
+
+
+设置配置文件sentinel.conf
+sentinel monitor mymaster 10.0.10.11 6379 2 
+sentinel down-after-milliseconds mymaster 1000
+sentinel parallel-syncs mymaster 1 
+sentinel failover-timeout mymaster 180000 
+sentinel auth-pass mymaster 123456 
 bind 10.0.10.11
 port 26379
 daemonize yes
 logfile "/data/redis/redis6379/log/sentinel.log"
 dir /data/redis/redis6379/data
 
-
-
+启动查看
+redis-sentinel  /data/redis/redis6379/conf/sentinel.conf 
 redis-cli -h 10.0.10.11 -p 26379 sentinel masters 查看当前的master节点情况
 redis-cli -h 10.0.10.11 -p 26379 info 查看master地址,几个slave,几个监控
 
