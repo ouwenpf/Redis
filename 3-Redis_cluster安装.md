@@ -1,3 +1,4 @@
+
 # Redis专业环境安装
 
 ## Redis下载
@@ -97,7 +98,7 @@ redis-cli --cluster create 10.0.10.11:6379 10.0.10.12:6379 10.0.10.13:6379 10.0.
 redis-cli -c -h 10.0.10.11 
 10.0.10.11:6379> CLUSTER NODES
 
--- 添加节点
+-- 添加节点(方法1)
 10.0.10.11:6379>CLUSTER MEET 10.0.10.17  6379
 10.0.10.11:6379>CLUSTER MEET 10.0.10.18  6379
 redis-cli -c -h 10.0.10.18 把18做成17的从库(登录到18上面执行如下语句CLUSTER REPLICATE 示例唯一标识符)
@@ -105,6 +106,43 @@ CLUSTER REPLICATE 2f19a289a565b11e9b412922b64aee254f22037f
 检查:
 redis-cli --cluster check 10.0.10.11:6379
 10.0.10.11:6379> CLUSTER NODES
--- 删除节点(当前机器自己节点无法删除)
+-- 添加节点(方法2)
+10.0.10.17是最新的主节点,10.0.10.11是原来存在的主节点
+redis-cli --cluster add-node 10.0.10.17:6379 10.0.10.11:6379
+[ERR] Node 10.0.10.17:6379 is not empty. Either the node already knows other nodes (check with CLUSTER NODES) or contains some key in database 0.
+如出现上面的提示lushdb执行以下,关闭redis data目录下都清空,重启即可
+
+
+10.0.10.11:6379> CLUSTER NODES
+redis-cli --cluster add-node   --cluster-slave  --cluster-master-id e5cbd560677a60a43dd1669f779b20fa0eb286b4  10.0.10.18:6379 10.0.10.11:6379
+10.0.10.11:6379> CLUSTER NODES
+-- 重新分配slot
+redis-cli --cluster reshard 10.0.10.17:6379        
+How many slots do you want to move (from 1 to 16384)? 4096  分配的slot数量
+What is the receiving node ID? e5cbd560677a60a43dd1669f779b20fa0eb286b4  新节点id
+Please enter all the source node IDs.
+  Type 'all' to use all the nodes as source nodes for the hash slots.
+  Type 'done' once you entered all the source nodes IDs.
+Source node #1: all
+Do you want to proceed with the proposed reshard plan (yes/no)? yes  表示全部洗牌
+
+-- 平衡slot
+redis-cli --cluster rebalance 10.0.10.17:6379
+
+-- 删除节点(方法1,当前机器自己节点无法删除)
+1. 确定下线的节点是否存在槽位slot,如果有,需要先把槽位迁移到其它的节点,保证整个集群节点映射的完整性
+2. 当下线的节点没有槽或者本身是从节点时,就可以通知集群内其它节点(或者叫忘记节点)当下线节点被忘记后正常关闭
+10.0.10.11:6379> CLUSTER NODES
+10.0.10.11:6379> CLUSTER FORGET 2f19a289a565b11e9b412922b64aee254f22037f 
+10.0.10.11:6379> CLUSTER FORGET 19000bd85e341b185e74b8fab4a57cb4cd073b9c
+
+
+
+10.0.10.11:6379> CLUSTER SAVECONFIG
+-- 删除节点(方法2)
+redis-cli --cluster del-node
+host:port node_id  
+
+
 
 ```
