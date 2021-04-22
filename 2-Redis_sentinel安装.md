@@ -1,6 +1,6 @@
 # Redis专业环境安装
 
-## MySQL下载
+## Redis下载
 
 Redis下载唯一合法途径就是去官方下载，其它网上来源均不安全，作为dba人员请务必注意，推荐下载二进制包  
 [下载地址](https://download.redis.io/releases/)

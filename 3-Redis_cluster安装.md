@@ -1,9 +1,10 @@
 # Redis专业环境安装
 
-## MySQL下载
+## Redis下载
 
 Redis下载唯一合法途径就是去官方下载，其它网上来源均不安全，作为dba人员请务必注意，推荐下载二进制包  
-[下载地址](https://download.redis.io/releases/)
+[Redis下载地址](https://download.redis.io/releases/)   
+[Ruby下载地址](https://www.ruby-lang.org/zh_cn/downloads/)
 
 
 
@@ -84,92 +85,26 @@ CONFIG SET  requirepass 123456
 ```
 
 
-- 配置Redis主从
+- 配置Redis-cluster
 
 ```
-1.主节点配置
+yum  install zlib-devel curl-devel openssl-devel   -y
+gem sources  --add source -a  https://gems.ruby-china.com/  --remove https://rubygems.org/
 
-daemonize yes
-logfile "/data/redis/redis6379/log/redis.log"
-dir /data/redis/redis6379/data
-requirepass 123456
-masterauth 123456
-timeout 300
-#bind 127.0.0.1 -::1
-bind 10.0.10.11 -::1	#当前从节点的地址
+redis-cli  --cluster help 查询集群命令帮助
+--[ERR] Node 10.0.10.11:6379 NOAUTH Authentication required配置文件中需要把密码认证注释掉
+redis-cli --cluster create 10.0.10.11:6379 10.0.10.12:6379 10.0.10.13:6379 10.0.10.14:6379 10.0.10.15:6379 10.0.10.16:6379 --cluster-replicas 1
+redis-cli -c -h 10.0.10.11 
+10.0.10.11:6379> CLUSTER NODES
 
-
-
-
-
-2.从节点配置
-daemonize yes
-logfile "/data/redis/redis6379/log/redis.log"
-dir /data/redis/redis6379/data
-requirepass 123456
-masterauth 123456
-timeout 300
-#replica-serve-stale-data yes #从节点只读6.0版本默认自动配置好了无需配置
-#bind 127.0.0.1 -::1
-bind 10.0.10.12 -::1	#当前从节点的地址
-slaveof 10.0.10.11 6379 #主节点的地址
-
-3. 查询主从相关信息
-10.0.10.11:6379> info
-
-# Replication
-role:master
-connected_slaves:2
-slave0:ip=10.0.10.12,port=6379,state=online,offset=2282,lag=1
-slave1:ip=10.0.10.13,port=6379,state=online,offset=2296,lag=0
-master_failover_state:no-failover
-master_replid:d002f4caa55f2370751f4c6daa8d6c4759bd03d9
-master_replid2:0000000000000000000000000000000000000000
-master_repl_offset:2296
-second_repl_offset:-1
-repl_backlog_active:1
-repl_backlog_size:1048576
-repl_backlog_first_byte_offset:1
-repl_backlog_histlen:2296
-
-```
-
-
-- redis+哨兵(主从切换)配置
-```
-如果主节点挂了怎么办，所以redis提供了一个sentinel(哨兵),以此来实现主从切换
-
-哨兵的作用
-1. 监控:监控主从是否正常
-2. 通知:出现问题时,可以通知相关人员
-3. 故障迁移:自动主从切换
-4. 统一配置管理:连接者询问sentinel取得主从地址
-
-sentinel monitor mymaster 10.0.10.11 6379 2 #mymaster别名,10.0.10.11 6379主节点的地址和端口,2表示投票的数量(sentinel/2+1)
-sentinel down-after-millseconds mymaster 10000 #10秒主节点还未响应认为主节点挂掉
-sentinel parallel-syncs mymaster 1 #主从切换后,并行同步机器的数量
-sentinel failover-timeout-mymaster 15000 #15主节点还没有活过来,进行切换
-sentinel auth-pass mymaster 123456 #哨兵验证主节点需要密码
-bind 10.0.10.11 哨兵所在的服务器的ip
-----------------------------------------------------------------------
-
-
-设置配置文件sentinel.conf
-sentinel monitor mymaster 10.0.10.11 6379 2 
-sentinel down-after-milliseconds mymaster 1000
-sentinel parallel-syncs mymaster 1 
-sentinel failover-timeout mymaster 180000 
-sentinel auth-pass mymaster 123456 
-bind 10.0.10.11
-port 26379
-daemonize yes
-logfile "/data/redis/redis6379/log/sentinel.log"
-dir /data/redis/redis6379/data
-
-启动查看
-redis-sentinel  /data/redis/redis6379/conf/sentinel.conf 
-redis-cli -h 10.0.10.11 -p 26379 sentinel masters 查看当前的master节点情况
-redis-cli -h 10.0.10.11 -p 26379 info 查看master地址,几个slave,几个监控
-
+-- 添加节点
+10.0.10.11:6379>CLUSTER MEET 10.0.10.17  6379
+10.0.10.11:6379>CLUSTER MEET 10.0.10.18  6379
+redis-cli -c -h 10.0.10.18 把18做成17的从库(登录到18上面执行如下语句CLUSTER REPLICATE 示例唯一标识符)
+CLUSTER REPLICATE 2f19a289a565b11e9b412922b64aee254f22037f
+检查:
+redis-cli --cluster check 10.0.10.11:6379
+10.0.10.11:6379> CLUSTER NODES
+-- 删除节点(当前机器自己节点无法删除)
 
 ```
