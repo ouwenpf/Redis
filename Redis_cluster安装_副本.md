@@ -123,11 +123,33 @@ redis-cli --cluster rebalance 10.0.10.17:6379
 
 
 
+-- 添加节点(方法2),不推荐
+10.0.10.17是最新的主节点,10.0.10.11是原来存在的主节点
+redis-cli --cluster add-node 10.0.10.17:6379 10.0.10.11:6379
+[ERR] Node 10.0.10.17:6379 is not empty. Either the node already knows other nodes (check with CLUSTER NODES) or contains some key in database 0.
+如出现上面的提示lushdb执行以下,关闭redis data目录下都清空,重启即可
+
+
+10.0.10.11:6379> CLUSTER NODES
+redis-cli --cluster add-node   --cluster-slave  --cluster-master-id e5cbd560677a60a43dd1669f779b20fa0eb286b4  10.0.10.18:6379 10.0.10.11:6379
+10.0.10.11:6379> CLUSTER NODES
+-- 重新分配slot
+redis-cli --cluster reshard 10.0.10.17:6379        
+How many slots do you want to move (from 1 to 16384)? 4096  分配的slot数量
+What is the receiving node ID? e5cbd560677a60a43dd1669f779b20fa0eb286b4  新节点id
+Please enter all the source node IDs.
+  Type 'all' to use all the nodes as source nodes for the hash slots.
+  Type 'done' once you entered all the source nodes IDs.
+Source node #1: all
+Do you want to proceed with the proposed reshard plan (yes/no)? yes  表示全部洗牌
+
+-- 平衡slot
+redis-cli --cluster rebalance 10.0.10.17:6379
+
+
 -- 删除节点(方法1,当前机器自己节点无法删除)
 1. 确定下线的节点是否存在槽位slot,如果有,需要先把槽位迁移到其它的节点,保证整个集群节点映射的完整性
 2. 删除slot位
-redis-cli -c -h 10.0.10.11 
-redis-cli --cluster check 10.0.10.11:6379
 redis-cli --cluster reshard 10.0.10.17:6379
 How many slots do you want to move (from 1 to 16384)? 4096   删除多少个slot位
 What is the receiving node ID? 8cb5f3b3eee0fe3f24f3ab7b78ff5ddcc1911cc8  将删除的slot放到哪个id上面
@@ -147,4 +169,21 @@ redis-cli --cluster check 10.0.10.11:6379
 redis-cli --cluster rebalance 10.0.10.17:6379
 
 
+
+-- 删除节点(方法2)
+redis-cli --cluster del-node
+host:port node_id  
+
+redis-cli --cluster reshard 10.0.10.17:6379
+How many slots do you want to move (from 1 to 16384)? 4096
+What is the receiving node ID? 
+What is the receiving node ID? 8cb5f3b3eee0fe3f24f3ab7b78ff5ddcc1911cc8
+Please enter all the source node IDs.
+  Type 'all' to use all the nodes as source nodes for the hash slots.
+  Type 'done' once you entered all the source nodes IDs.
+Source node #1: e5cbd560677a60a43dd1669f779b20fa0eb286b4
+Source node #2: done
+Do you want to proceed with the proposed reshard plan (yes/no)? yes
+-- 平衡slot
+redis-cli --cluster rebalance 10.0.10.17:6379
 ```

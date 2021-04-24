@@ -1,5 +1,5 @@
 
-# Redis专业环境安装
+# Redis手工配置分布式集群安装
 
 ## Redis下载
 
@@ -39,16 +39,13 @@ redis-benchmark  -h 10.0.10.11 -c 200 -r 1000000 -n 2000000 -t get,set,lpush,lpo
 - 手工配置redis集群
 ```
 1. 服务器信息
-10.0.10.11:6379
-10.0.10.12:6379
-10.0.10.13:6379
-10.0.10.14:6379
-10.0.10.15:6379
-10.0.10.16:6379
-10.0.10.17:6379
-10.0.10.18:6379
-10.0.10.19:6379
-10.0.10.20:6379
+主					从
+10.0.10.11:6379 <-- 10.0.10.16:6379
+10.0.10.12:6379 <-- 10.0.10.17:6379
+10.0.10.13:6379 <-- 10.0.10.18:6379
+10.0.10.14:6379 <-- 10.0.10.19:6379
+10.0.10.15:6379 <-- 10.0.10.20:6379
+
 
 2. 加入集群节点
 cluster meet 10.0.10.11 6379
@@ -62,5 +59,37 @@ cluster meet 10.0.10.18 6379
 cluster meet 10.0.10.19 6379
 cluster meet 10.0.10.20 6379
 
+3. 设置主从
+
+redis-cli -h 10.0.10.16
+CLUSTER REPLICATE 4079d8550bc2ef5eb0694f008491b6362c330a8b
+quit
+
+redis-cli -h 10.0.10.17
+CLUSTER REPLICATE f06092df5d52c3f351e51183fa2af89bb5a8a386
+quit
+
+redis-cli -h 10.0.10.18
+CLUSTER REPLICATE 8ff5be51062628e1a4b59af5c4853cf61cbbb2b3
+quit
+
+redis-cli -h 10.0.10.19
+CLUSTER REPLICATE 4b3fddd9fabbcff1ec0c2e3fd9ef7eedfe995bd0
+quit
+
+redis-cli -h 10.0.10.20
+CLUSTER REPLICATE 44025ad7f8a421b6787cde48bb628702c2871539
+quit
+
+
+
+4. 设置槽位
+redis-cli -h 10.0.10.11   cluster addslots {0..3274}
+redis-cli -h 10.0.10.12   cluster addslots {3275..6549}
+redis-cli -h 10.0.10.13   cluster addslots {6550..9824}
+redis-cli -h 10.0.10.14   cluster addslots {9825..13099}
+redis-cli -h 10.0.10.15   cluster addslots {13100..16383}
+
 
 ```
+

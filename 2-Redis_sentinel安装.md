@@ -1,4 +1,4 @@
-# Redis专业环境安装
+# Redis_sentinel专业环境安装
 
 ## Redis下载
 
@@ -97,7 +97,7 @@ masterauth 123456
 timeout 300
 #bind 127.0.0.1 -::1
 bind 10.0.10.11 -::1	#当前从节点的地址
-
+save ""   禁用持久化
 
 
 
