@@ -1,0 +1,232 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/server/config_rewrite.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CONFIG REWRITE &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Server（服务器）" href="index.html" />
+    <link rel="next" title="CONFIG SET" href="config_set.html" />
+    <link rel="prev" title="CONFIG RESETSTAT" href="config_resetstat.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "server/config_rewrite",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "server/config_rewrite";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="config_set.html" title="CONFIG SET"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="config_resetstat.html" title="CONFIG RESETSTAT"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="config-rewrite">
+<span id="id1"></span><h1>CONFIG REWRITE<a class="headerlink" href="#config-rewrite" title="Permalink to this headline">¶</a></h1>
+<p><strong>CONFIG REWRITE</strong></p>
+<p><a class="reference internal" href="#config-rewrite"><em>CONFIG REWRITE</em></a> 命令对启动 Redis 服务器时所指定的 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件进行改写：
+因为 <a class="reference internal" href="config_set.html#config-set"><em>CONFIG SET</em></a> 命令可以对服务器的当前配置进行修改，
+而修改后的配置可能和 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中所描述的配置不一样，
+<a class="reference internal" href="#config-rewrite"><em>CONFIG REWRITE</em></a> 的作用就是通过尽可能少的修改，
+将服务器当前所使用的配置记录到 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中。</p>
+<p>重写会以非常保守的方式进行：</p>
+<ul class="simple">
+<li>原有 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件的整体结构和注释会被尽可能地保留。</li>
+<li>如果一个选项已经存在于原有 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中 ，
+那么对该选项的重写会在选项原本所在的位置（行号）上进行。</li>
+<li>如果一个选项不存在于原有 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中，
+并且该选项被设置为默认值，
+那么重写程序不会将这个选项添加到重写后的 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中。</li>
+<li>如果一个选项不存在于原有 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中，
+并且该选项被设置为非默认值，
+那么这个选项将被添加到重写后的 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件的末尾。</li>
+<li>未使用的行会被留白。
+比如说，
+如果你在原有 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件上设置了数个关于 <tt class="docutils literal"><span class="pre">save</span></tt> 选项的参数，
+但现在你将这些 <tt class="docutils literal"><span class="pre">save</span></tt> 参数的一个或全部都关闭了，
+那么这些不再使用的参数原本所在的行就会变成空白的。</li>
+</ul>
+<p>即使启动服务器时所指定的 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件已经不再存在，
+<a class="reference internal" href="#config-rewrite"><em>CONFIG REWRITE</em></a> 命令也可以重新构建并生成出一个新的 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件。</p>
+<p>另一方面，
+如果启动服务器时没有载入 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件，
+那么执行 <a class="reference internal" href="#config-rewrite"><em>CONFIG REWRITE</em></a> 命令将引发一个错误。</p>
+<div class="section" id="id2">
+<h2>原子性重写<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>对 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件的重写是原子性的，
+并且是一致的：
+如果重写出错或重写期间服务器崩溃，
+那么重写失败，
+原有 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件不会被修改。
+如果重写成功，
+那么 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件为重写后的新文件。</p>
+</div>
+<div class="section" id="id3">
+<h2>可用版本<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<p>&gt;= 2.8.0</p>
+</div>
+<div class="section" id="id4">
+<h2>返回值<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<p>一个状态值：如果配置重写成功则返回 <tt class="docutils literal"><span class="pre">OK</span></tt> ，失败则返回一个错误。</p>
+</div>
+<div class="section" id="id5">
+<h2>测试<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<p>以下是执行 <a class="reference internal" href="#config-rewrite"><em>CONFIG REWRITE</em></a> 前，
+被载入到 Redis 服务器的 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中关于 <tt class="docutils literal"><span class="pre">appendonly</span></tt> 选项的设置：</p>
+<div class="highlight-python"><pre># ... 其他选项
+
+appendonly no
+
+# ... 其他选项</pre>
+</div>
+<p>在执行以下命令之后：</p>
+<div class="highlight-python"><pre>127.0.0.1:6379&gt; CONFIG GET appendonly           # appendonly 处于关闭状态
+1) "appendonly"
+2) "no"
+
+127.0.0.1:6379&gt; CONFIG SET appendonly yes       # 打开 appendonly
+OK
+
+127.0.0.1:6379&gt; CONFIG GET appendonly
+1) "appendonly"
+2) "yes"
+
+127.0.0.1:6379&gt; CONFIG REWRITE                  # 将 appendonly 的修改写入到 redis.conf 中
+OK</pre>
+</div>
+<p>重写后的 <tt class="docutils literal"><span class="pre">redis.conf</span></tt> 文件中的 <tt class="docutils literal"><span class="pre">appendonly</span></tt> 选项将被改写：</p>
+<div class="highlight-python"><pre># ... 其他选项
+
+appendonly yes
+
+# ... 其他选项</pre>
+</div>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="config_set.html" title="CONFIG SET"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="config_resetstat.html" title="CONFIG RESETSTAT"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/server/config_rewrite.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+</html>

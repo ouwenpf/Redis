@@ -1,0 +1,180 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/string/setbit.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SETBIT &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="String（字符串）" href="index.html" />
+    <link rel="next" title="SETEX" href="setex.html" />
+    <link rel="prev" title="SET" href="set.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "string/setbit",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "string/setbit";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="setex.html" title="SETEX"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="set.html" title="SET"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="setbit">
+<span id="id1"></span><h1>SETBIT<a class="headerlink" href="#setbit" title="Permalink to this headline">¶</a></h1>
+<p><strong>SETBIT key offset value</strong></p>
+<p>对 <tt class="docutils literal"><span class="pre">key</span></tt> 所储存的字符串值，设置或清除指定偏移量上的位(bit)。</p>
+<p>位的设置或清除取决于 <tt class="docutils literal"><span class="pre">value</span></tt> 参数，可以是 <tt class="docutils literal"><span class="pre">0</span></tt> 也可以是 <tt class="docutils literal"><span class="pre">1</span></tt> 。</p>
+<p>当 <tt class="docutils literal"><span class="pre">key</span></tt> 不存在时，自动生成一个新的字符串值。</p>
+<p>字符串会进行伸展(grown)以确保它可以将 <tt class="docutils literal"><span class="pre">value</span></tt> 保存在指定的偏移量上。当字符串值进行伸展时，空白位置以 <tt class="docutils literal"><span class="pre">0</span></tt> 填充。</p>
+<p><tt class="docutils literal"><span class="pre">offset</span></tt> 参数必须大于或等于 <tt class="docutils literal"><span class="pre">0</span></tt> ，小于 2^32 (bit 映射被限制在 512 MB 之内)。</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">对使用大的 <tt class="docutils literal"><span class="pre">offset</span></tt> 的 <a class="reference internal" href="#setbit">SETBIT</a> 操作来说，内存分配可能造成 Redis 服务器被阻塞。具体参考 <a class="reference internal" href="setrange.html#setrange"><em>SETRANGE</em></a> 命令，warning(警告)部分。</p>
+</div>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.2.0</dd>
+<dt><strong>时间复杂度:</strong></dt>
+<dd>O(1)</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>指定偏移量原来储存的位。</dd>
+</dl>
+<div class="highlight-python"><pre>redis&gt; SETBIT bit 10086 1
+(integer) 0
+
+redis&gt; GETBIT bit 10086
+(integer) 1
+
+redis&gt; GETBIT bit 100   # bit 默认被初始化为 0
+(integer) 0</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="setex.html" title="SETEX"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="set.html" title="SET"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/string/setbit.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

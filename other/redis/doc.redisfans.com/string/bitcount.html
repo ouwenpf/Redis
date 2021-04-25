@@ -1,0 +1,199 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/string/bitcount.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>BITCOUNT &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="String（字符串）" href="index.html" />
+    <link rel="next" title="BITOP" href="bitop.html" />
+    <link rel="prev" title="APPEND" href="append.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "string/bitcount",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "string/bitcount";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="bitop.html" title="BITOP"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="append.html" title="APPEND"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="bitcount">
+<span id="id1"></span><h1>BITCOUNT<a class="headerlink" href="#bitcount" title="Permalink to this headline">¶</a></h1>
+<p><strong>BITCOUNT key [start] [end]</strong></p>
+<p>计算给定字符串中，被设置为 <tt class="docutils literal"><span class="pre">1</span></tt> 的比特位的数量。</p>
+<p>一般情况下，给定的整个字符串都会被进行计数，通过指定额外的 <tt class="docutils literal"><span class="pre">start</span></tt> 或 <tt class="docutils literal"><span class="pre">end</span></tt> 参数，可以让计数只在特定的位上进行。</p>
+<p><tt class="docutils literal"><span class="pre">start</span></tt> 和 <tt class="docutils literal"><span class="pre">end</span></tt> 参数的设置和 <a class="reference internal" href="getrange.html#getrange"><em>GETRANGE</em></a> 命令类似，都可以使用负数值：比如 <tt class="docutils literal"><span class="pre">-1</span></tt> 表示最后一个位，而 <tt class="docutils literal"><span class="pre">-2</span></tt> 表示倒数第二个位，以此类推。</p>
+<p>不存在的 <tt class="docutils literal"><span class="pre">key</span></tt> 被当成是空字符串来处理，因此对一个不存在的 <tt class="docutils literal"><span class="pre">key</span></tt> 进行 <tt class="docutils literal"><span class="pre">BITCOUNT</span></tt> 操作，结果为 <tt class="docutils literal"><span class="pre">0</span></tt> 。</p>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.6.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd>O(N)</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>被设置为 <tt class="docutils literal"><span class="pre">1</span></tt> 的位的数量。</dd>
+</dl>
+<div class="highlight-python"><pre>redis&gt; BITCOUNT bits
+(integer) 0
+
+redis&gt; SETBIT bits 0 1          # 0001
+(integer) 0
+
+redis&gt; BITCOUNT bits
+(integer) 1
+
+redis&gt; SETBIT bits 3 1          # 1001
+(integer) 0
+
+redis&gt; BITCOUNT bits
+(integer) 2</pre>
+</div>
+<div class="section" id="bitmap">
+<h2>模式：使用 bitmap 实现用户上线次数统计<a class="headerlink" href="#bitmap" title="Permalink to this headline">¶</a></h2>
+<p>Bitmap 对于一些特定类型的计算非常有效。</p>
+<p>假设现在我们希望记录自己网站上的用户的上线频率，比如说，计算用户 A 上线了多少天，用户 B 上线了多少天，诸如此类，以此作为数据，从而决定让哪些用户参加 beta 测试等活动 —— 这个模式可以使用 <a class="reference internal" href="setbit.html#setbit"><em>SETBIT</em></a> 和 <a class="reference internal" href="#bitcount"><em>BITCOUNT</em></a> 来实现。</p>
+<p>比如说，每当用户在某一天上线的时候，我们就使用 <a class="reference internal" href="setbit.html#setbit"><em>SETBIT</em></a> ，以用户名作为 <tt class="docutils literal"><span class="pre">key</span></tt> ，将那天所代表的网站的上线日作为 <tt class="docutils literal"><span class="pre">offset</span></tt> 参数，并将这个 <tt class="docutils literal"><span class="pre">offset</span></tt> 上的为设置为 <tt class="docutils literal"><span class="pre">1</span></tt> 。</p>
+<p>举个例子，如果今天是网站上线的第 100 天，而用户 peter 在今天阅览过网站，那么执行命令 <tt class="docutils literal"><span class="pre">SETBIT</span> <span class="pre">peter</span> <span class="pre">100</span> <span class="pre">1</span></tt> ；如果明天 peter 也继续阅览网站，那么执行命令 <tt class="docutils literal"><span class="pre">SETBIT</span> <span class="pre">peter</span> <span class="pre">101</span> <span class="pre">1</span></tt> ，以此类推。</p>
+<p>当要计算 peter 总共以来的上线次数时，就使用 <a class="reference internal" href="#bitcount"><em>BITCOUNT</em></a> 命令：执行 <tt class="docutils literal"><span class="pre">BITCOUNT</span> <span class="pre">peter</span></tt> ，得出的结果就是 peter 上线的总天数。</p>
+<p>更详细的实现可以参考博文(墙外) <a class="reference external" href="http://blog.getspool.com/2011/11/29/fast-easy-realtime-metrics-using-redis-bitmaps/">Fast, easy, realtime metrics using Redis bitmaps</a> 。</p>
+</div>
+<div class="section" id="id2">
+<h2>性能<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>前面的上线次数统计例子，即使运行 10 年，占用的空间也只是每个用户 10*365 比特位(bit)，也即是每个用户 456 字节。对于这种大小的数据来说， <a class="reference internal" href="#bitcount"><em>BITCOUNT</em></a> 的处理速度就像 <a class="reference internal" href="get.html#get"><em>GET</em></a> 和 <a class="reference internal" href="incr.html#incr"><em>INCR</em></a> 这种 O(1) 复杂度的操作一样快。</p>
+<p>如果你的 bitmap 数据非常大，那么可以考虑使用以下两种方法：</p>
+<ol class="arabic simple">
+<li>将一个大的 bitmap 分散到不同的 key 中，作为小的 bitmap 来处理。使用 Lua 脚本可以很方便地完成这一工作。</li>
+<li>使用 <a class="reference internal" href="#bitcount"><em>BITCOUNT</em></a> 的 <tt class="docutils literal"><span class="pre">start</span></tt> 和 <tt class="docutils literal"><span class="pre">end</span></tt> 参数，每次只对所需的部分位进行计算，将位的累积工作(accumulating)放到客户端进行，并且对结果进行缓存 (caching)。</li>
+</ol>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="bitop.html" title="BITOP"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="append.html" title="APPEND"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/string/bitcount.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

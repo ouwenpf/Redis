@@ -1,0 +1,200 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/list/linsert.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>LINSERT &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="List（列表）" href="index.html" />
+    <link rel="next" title="LLEN" href="llen.html" />
+    <link rel="prev" title="LINDEX" href="lindex.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "list/linsert",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "list/linsert";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="llen.html" title="LLEN"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lindex.html" title="LINDEX"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">List（列表）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="linsert">
+<span id="id1"></span><h1>LINSERT<a class="headerlink" href="#linsert" title="Permalink to this headline">¶</a></h1>
+<p><strong>LINSERT key BEFORE|AFTER pivot value</strong></p>
+<p>将值 <tt class="docutils literal"><span class="pre">value</span></tt> 插入到列表 <tt class="docutils literal"><span class="pre">key</span></tt> 当中，位于值 <tt class="docutils literal"><span class="pre">pivot</span></tt> 之前或之后。</p>
+<p>当 <tt class="docutils literal"><span class="pre">pivot</span></tt> 不存在于列表 <tt class="docutils literal"><span class="pre">key</span></tt> 时，不执行任何操作。</p>
+<p>当 <tt class="docutils literal"><span class="pre">key</span></tt> 不存在时， <tt class="docutils literal"><span class="pre">key</span></tt> 被视为空列表，不执行任何操作。</p>
+<p>如果 <tt class="docutils literal"><span class="pre">key</span></tt> 不是列表类型，返回一个错误。</p>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.2.0</dd>
+<dt><strong>时间复杂度:</strong></dt>
+<dd>O(N)， <tt class="docutils literal"><span class="pre">N</span></tt> 为寻找 <tt class="docutils literal"><span class="pre">pivot</span></tt> 过程中经过的元素数量。</dd>
+<dt><strong>返回值:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">如果命令执行成功，返回插入操作完成之后，列表的长度。</div>
+<div class="line">如果没有找到 <tt class="docutils literal"><span class="pre">pivot</span></tt> ，返回 <tt class="docutils literal"><span class="pre">-1</span></tt> 。</div>
+<div class="line">如果 <tt class="docutils literal"><span class="pre">key</span></tt> 不存在或为空列表，返回 <tt class="docutils literal"><span class="pre">0</span></tt> 。</div>
+</div>
+</dd>
+</dl>
+<div class="highlight-python"><pre>redis&gt; RPUSH mylist "Hello"
+(integer) 1
+
+redis&gt; RPUSH mylist "World"
+(integer) 2
+
+redis&gt; LINSERT mylist BEFORE "World" "There"
+(integer) 3
+
+redis&gt; LRANGE mylist 0 -1
+1) "Hello"
+2) "There"
+3) "World"
+
+
+# 对一个非空列表插入，查找一个不存在的 pivot
+
+redis&gt; LINSERT mylist BEFORE "go" "let's"
+(integer) -1                                    # 失败
+
+
+# 对一个空列表执行 LINSERT 命令
+
+redis&gt; EXISTS fake_list
+(integer) 0
+
+redis&gt; LINSERT fake_list BEFORE "nono" "gogogog"
+(integer) 0                                      # 失败</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="llen.html" title="LLEN"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lindex.html" title="LINDEX"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >List（列表）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/list/linsert.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

@@ -1,0 +1,170 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/connection/quit.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>QUIT &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Connection（连接）" href="index.html" />
+    <link rel="next" title="SELECT" href="select.html" />
+    <link rel="prev" title="PING" href="ping.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "connection/quit",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "connection/quit";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="select.html" title="SELECT"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="ping.html" title="PING"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Connection（连接）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="quit">
+<span id="id1"></span><h1>QUIT<a class="headerlink" href="#quit" title="Permalink to this headline">¶</a></h1>
+<p><strong>QUIT</strong></p>
+<p>请求服务器关闭与当前客户端的连接。</p>
+<p>一旦所有等待中的回复(如果有的话)顺利写入到客户端，连接就会被关闭。</p>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 1.0.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd>O(1)</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>总是返回 <tt class="docutils literal"><span class="pre">OK</span></tt> (但是不会被打印显示，因为当时 Redis-cli 已经退出)。</dd>
+</dl>
+<div class="highlight-python"><pre>$ redis
+
+redis&gt; QUIT
+
+$</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="select.html" title="SELECT"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="ping.html" title="PING"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Connection（连接）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/connection/quit.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+</html>

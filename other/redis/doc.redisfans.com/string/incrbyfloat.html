@@ -1,0 +1,216 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/string/incrbyfloat.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>INCRBYFLOAT &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="String（字符串）" href="index.html" />
+    <link rel="next" title="MGET" href="mget.html" />
+    <link rel="prev" title="INCRBY" href="incrby.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "string/incrbyfloat",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "string/incrbyfloat";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="mget.html" title="MGET"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="incrby.html" title="INCRBY"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="incrbyfloat">
+<span id="id1"></span><h1>INCRBYFLOAT<a class="headerlink" href="#incrbyfloat" title="Permalink to this headline">¶</a></h1>
+<p><strong>INCRBYFLOAT key increment</strong></p>
+<p>为 <tt class="docutils literal"><span class="pre">key</span></tt> 中所储存的值加上浮点数增量 <tt class="docutils literal"><span class="pre">increment</span></tt> 。</p>
+<p>如果 <tt class="docutils literal"><span class="pre">key</span></tt> 不存在，那么 <a class="reference internal" href="#incrbyfloat">INCRBYFLOAT</a> 会先将 <tt class="docutils literal"><span class="pre">key</span></tt> 的值设为 <tt class="docutils literal"><span class="pre">0</span></tt> ，再执行加法操作。</p>
+<p>如果命令执行成功，那么 <tt class="docutils literal"><span class="pre">key</span></tt> 的值会被更新为（执行加法之后的）新值，并且新值会以字符串的形式返回给调用者。</p>
+<p>无论是 <tt class="docutils literal"><span class="pre">key</span></tt> 的值，还是增量 <tt class="docutils literal"><span class="pre">increment</span></tt> ，都可以使用像 <tt class="docutils literal"><span class="pre">2.0e7</span></tt> 、 <tt class="docutils literal"><span class="pre">3e5</span></tt> 、 <tt class="docutils literal"><span class="pre">90e-2</span></tt> 那样的指数符号(exponential notation)来表示，但是，<strong>执行 INCRBYFLOAT 命令之后的值</strong>总是以同样的形式储存，也即是，它们总是由一个数字，一个（可选的）小数点和一个任意位的小数部分组成（比如 <tt class="docutils literal"><span class="pre">3.14</span></tt> 、 <tt class="docutils literal"><span class="pre">69.768</span></tt> ，诸如此类)，小数部分尾随的 <tt class="docutils literal"><span class="pre">0</span></tt> 会被移除，如果有需要的话，还会将浮点数改为整数（比如 <tt class="docutils literal"><span class="pre">3.0</span></tt> 会被保存成 <tt class="docutils literal"><span class="pre">3</span></tt> ）。</p>
+<p>除此之外，无论加法计算所得的浮点数的实际精度有多长， <a class="reference internal" href="#incrbyfloat">INCRBYFLOAT</a> 的计算结果也最多只能表示小数点的后十七位。</p>
+<p>当以下任意一个条件发生时，返回一个错误：</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">key</span></tt> 的值不是字符串类型(因为 Redis 中的数字和浮点数都以字符串的形式保存，所以它们都属于字符串类型）</li>
+<li><tt class="docutils literal"><span class="pre">key</span></tt> 当前的值或者给定的增量 <tt class="docutils literal"><span class="pre">increment</span></tt> 不能解释(parse)为双精度浮点数(double precision floating point number）</li>
+</ul>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.6.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd>O(1)</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>执行命令之后 <tt class="docutils literal"><span class="pre">key</span></tt> 的值。</dd>
+</dl>
+<div class="highlight-python"><pre># 值和增量都不是指数符号
+
+redis&gt; SET mykey 10.50
+OK
+
+redis&gt; INCRBYFLOAT mykey 0.1
+"10.6"
+
+
+# 值和增量都是指数符号
+
+redis&gt; SET mykey 314e-2
+OK
+
+redis&gt; GET mykey                # 用 SET 设置的值可以是指数符号
+"314e-2"
+
+redis&gt; INCRBYFLOAT mykey 0      # 但执行 INCRBYFLOAT 之后格式会被改成非指数符号
+"3.14"
+
+
+# 可以对整数类型执行
+
+redis&gt; SET mykey 3
+OK
+
+redis&gt; INCRBYFLOAT mykey 1.1
+"4.1"
+
+
+# 后跟的 0 会被移除
+
+redis&gt; SET mykey 3.0
+OK
+
+redis&gt; GET mykey                                    # SET 设置的值小数部分可以是 0
+"3.0"
+
+redis&gt; INCRBYFLOAT mykey 1.000000000000000000000    # 但 INCRBYFLOAT 会将无用的 0 忽略掉，有需要的话，将浮点变为整数
+"4"
+
+redis&gt; GET mykey
+"4"</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="mget.html" title="MGET"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="incrby.html" title="INCRBY"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/string/incrbyfloat.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

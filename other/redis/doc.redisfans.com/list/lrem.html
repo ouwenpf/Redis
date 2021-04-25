@@ -1,0 +1,221 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/list/lrem.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>LREM &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="List（列表）" href="index.html" />
+    <link rel="next" title="LSET" href="lset.html" />
+    <link rel="prev" title="LRANGE" href="lrange.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "list/lrem",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "list/lrem";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="lset.html" title="LSET"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="lrange.html" title="LRANGE"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">List（列表）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="lrem">
+<span id="id1"></span><h1>LREM<a class="headerlink" href="#lrem" title="Permalink to this headline">¶</a></h1>
+<p><strong>LREM key count value</strong></p>
+<p>根据参数 <tt class="docutils literal"><span class="pre">count</span></tt> 的值，移除列表中与参数 <tt class="docutils literal"><span class="pre">value</span></tt> 相等的元素。</p>
+<p><tt class="docutils literal"><span class="pre">count</span></tt> 的值可以是以下几种：</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">count</span> <span class="pre">&gt;</span> <span class="pre">0</span></tt> : 从表头开始向表尾搜索，移除与 <tt class="docutils literal"><span class="pre">value</span></tt> 相等的元素，数量为 <tt class="docutils literal"><span class="pre">count</span></tt> 。</li>
+<li><tt class="docutils literal"><span class="pre">count</span> <span class="pre">&lt;</span> <span class="pre">0</span></tt> : 从表尾开始向表头搜索，移除与 <tt class="docutils literal"><span class="pre">value</span></tt> 相等的元素，数量为 <tt class="docutils literal"><span class="pre">count</span></tt> 的绝对值。</li>
+<li><tt class="docutils literal"><span class="pre">count</span> <span class="pre">=</span> <span class="pre">0</span></tt> : 移除表中所有与 <tt class="docutils literal"><span class="pre">value</span></tt> 相等的值。</li>
+</ul>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 1.0.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd>O(N)， <tt class="docutils literal"><span class="pre">N</span></tt> 为列表的长度。</dd>
+<dt><strong>返回值：</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">被移除元素的数量。</div>
+<div class="line">因为不存在的 <tt class="docutils literal"><span class="pre">key</span></tt> 被视作空表(empty list)，所以当 <tt class="docutils literal"><span class="pre">key</span></tt> 不存在时， <a class="reference internal" href="#lrem">LREM</a> 命令总是返回 <tt class="docutils literal"><span class="pre">0</span></tt> 。</div>
+</div>
+</dd>
+</dl>
+<div class="highlight-python"><pre># 先创建一个表，内容排列是
+# morning hello morning helllo morning
+
+redis&gt; LPUSH greet "morning"
+(integer) 1
+redis&gt; LPUSH greet "hello"
+(integer) 2
+redis&gt; LPUSH greet "morning"
+(integer) 3
+redis&gt; LPUSH greet "hello"
+(integer) 4
+redis&gt; LPUSH greet "morning"
+(integer) 5
+
+redis&gt; LRANGE greet 0 4         # 查看所有元素
+1) "morning"
+2) "hello"
+3) "morning"
+4) "hello"
+5) "morning"
+
+redis&gt; LREM greet 2 morning     # 移除从表头到表尾，最先发现的两个 morning
+(integer) 2                     # 两个元素被移除
+
+redis&gt; LLEN greet               # 还剩 3 个元素
+(integer) 3
+
+redis&gt; LRANGE greet 0 2
+1) "hello"
+2) "hello"
+3) "morning"
+
+redis&gt; LREM greet -1 morning    # 移除从表尾到表头，第一个 morning
+(integer) 1
+
+redis&gt; LLEN greet               # 剩下两个元素
+(integer) 2
+
+redis&gt; LRANGE greet 0 1
+1) "hello"
+2) "hello"
+
+redis&gt; LREM greet 0 hello      # 移除表中所有 hello
+(integer) 2                    # 两个 hello 被移除
+
+redis&gt; LLEN greet
+(integer) 0</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="lset.html" title="LSET"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="lrange.html" title="LRANGE"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >List（列表）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/list/lrem.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

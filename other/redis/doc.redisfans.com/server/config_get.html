@@ -1,0 +1,233 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/server/config_get.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CONFIG GET &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Server（服务器）" href="index.html" />
+    <link rel="next" title="CONFIG RESETSTAT" href="config_resetstat.html" />
+    <link rel="prev" title="CLIENT SETNAME" href="client_setname.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "server/config_get",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "server/config_get";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="config_resetstat.html" title="CONFIG RESETSTAT"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="client_setname.html" title="CLIENT SETNAME"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="config-get">
+<span id="id1"></span><h1>CONFIG GET<a class="headerlink" href="#config-get" title="Permalink to this headline">¶</a></h1>
+<p><strong>CONFIG GET parameter</strong></p>
+<p><a class="reference internal" href="#id1">CONFIG GET</a> 命令用于取得运行中的 Redis 服务器的配置参数(configuration parameters)，在 Redis 2.4 版本中， 有部分参数没有办法用 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span></tt> 访问，但是在最新的 Redis 2.6 版本中，所有配置参数都已经可以用 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span></tt> 访问了。</p>
+<p><a class="reference internal" href="#id1">CONFIG GET</a> 接受单个参数 <tt class="docutils literal"><span class="pre">parameter</span></tt> 作为搜索关键字，查找所有匹配的配置参数，其中参数和值以“键-值对”(key-value pairs)的方式排列。</p>
+<p>比如执行 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span> <span class="pre">s*</span></tt> 命令，服务器就会返回所有以 <tt class="docutils literal"><span class="pre">s</span></tt> 开头的配置参数及参数的值：</p>
+<div class="highlight-python"><pre>redis&gt; CONFIG GET s*
+1) "save"                       # 参数名：save
+2) "900 1 300 10 60 10000"      # save 参数的值
+3) "slave-serve-stale-data"     # 参数名： slave-serve-stale-data
+4) "yes"                        # slave-serve-stale-data 参数的值
+5) "set-max-intset-entries"     # ...
+6) "512"
+7) "slowlog-log-slower-than"
+8) "1000"
+9) "slowlog-max-len"
+10) "1000"</pre>
+</div>
+<p>如果你只是寻找特定的某个参数的话，你当然也可以直接指定参数的名字：</p>
+<div class="highlight-python"><pre>redis&gt; CONFIG GET slowlog-max-len
+1) "slowlog-max-len"
+2) "1000"</pre>
+</div>
+<p>使用命令 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span> <span class="pre">*</span></tt> ，可以列出 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span></tt> 命令支持的所有参数：</p>
+<div class="highlight-python"><pre>redis&gt; CONFIG GET *
+1) "dir"
+2) "/var/lib/redis"
+3) "dbfilename"
+4) "dump.rdb"
+5) "requirepass"
+6) (nil)
+7) "masterauth"
+8) (nil)
+9) "maxmemory"
+10) "0"
+11) "maxmemory-policy"
+12) "volatile-lru"
+13) "maxmemory-samples"
+14) "3"
+15) "timeout"
+16) "0"
+17) "appendonly"
+18) "no"
+# ...
+49) "loglevel"
+50) "verbose"</pre>
+</div>
+<p>所有被 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">SET</span></tt> 所支持的配置参数都可以在配置文件 redis.conf 中找到，不过 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span></tt> 和 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">SET</span></tt> 使用的格式和 redis.conf 文件所使用的格式有以下两点不同：</p>
+<ul>
+<li><div class="first line-block">
+<div class="line"><tt class="docutils literal"><span class="pre">10kb</span></tt> 、 <tt class="docutils literal"><span class="pre">2gb</span></tt> 这些在配置文件中所使用的储存单位缩写，不可以用在 <tt class="docutils literal"><span class="pre">CONFIG</span></tt> 命令中， <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">SET</span></tt> 的值只能通过数字值显式地设定。</div>
+<div class="line"><br /></div>
+<div class="line">像 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">SET</span> <span class="pre">xxx</span> <span class="pre">1k</span></tt> 这样的命令是错误的，正确的格式是 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">SET</span> <span class="pre">xxx</span> <span class="pre">1000</span></tt> 。</div>
+</div>
+</li>
+<li><div class="first line-block">
+<div class="line"><tt class="docutils literal"><span class="pre">save</span></tt> 选项在 redis.conf 中是用多行文字储存的，但在 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span></tt> 命令中，它只打印一行文字。</div>
+<div class="line"><br /></div>
+<div class="line">以下是 <tt class="docutils literal"><span class="pre">save</span></tt> 选项在 redis.conf 文件中的表示：</div>
+<div class="line"><br /></div>
+<div class="line"><tt class="docutils literal"><span class="pre">save</span> <span class="pre">900</span> <span class="pre">1</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">save</span> <span class="pre">300</span> <span class="pre">10</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">save</span> <span class="pre">60</span> <span class="pre">10000</span></tt></div>
+<div class="line"><br /></div>
+<div class="line">但是 <tt class="docutils literal"><span class="pre">CONFIG</span> <span class="pre">GET</span></tt> 命令的输出只有一行：</div>
+<div class="line"><br /></div>
+<div class="line"><tt class="docutils literal"><span class="pre">redis&gt;</span> <span class="pre">CONFIG</span> <span class="pre">GET</span> <span class="pre">save</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">1)</span> <span class="pre">&quot;save&quot;</span></tt></div>
+<div class="line"><tt class="docutils literal"><span class="pre">2)</span> <span class="pre">&quot;900</span> <span class="pre">1</span> <span class="pre">300</span> <span class="pre">10</span> <span class="pre">60</span> <span class="pre">10000&quot;</span></tt></div>
+<div class="line"><br /></div>
+<div class="line">上面 <tt class="docutils literal"><span class="pre">save</span></tt> 参数的三个值表示：在 900 秒内最少有 1 个 key 被改动，或者 300 秒内最少有 10 个 key 被改动，又或者 60 秒内最少有 1000 个 key 被改动，以上三个条件随便满足一个，就触发一次保存操作。</div>
+</div>
+</li>
+</ul>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.0.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd>不明确</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>给定配置参数的值。</dd>
+</dl>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="config_resetstat.html" title="CONFIG RESETSTAT"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="client_setname.html" title="CLIENT SETNAME"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/server/config_get.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+</html>

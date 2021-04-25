@@ -1,0 +1,203 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/string/setrange.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SETRANGE &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="String（字符串）" href="index.html" />
+    <link rel="next" title="STRLEN" href="strlen.html" />
+    <link rel="prev" title="SETNX" href="setnx.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "string/setrange",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "string/setrange";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="strlen.html" title="STRLEN"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="setnx.html" title="SETNX"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="setrange">
+<span id="id1"></span><h1>SETRANGE<a class="headerlink" href="#setrange" title="Permalink to this headline">¶</a></h1>
+<p><strong>SETRANGE key offset value</strong></p>
+<p>用 <tt class="docutils literal"><span class="pre">value</span></tt> 参数覆写(overwrite)给定 <tt class="docutils literal"><span class="pre">key</span></tt> 所储存的字符串值，从偏移量 <tt class="docutils literal"><span class="pre">offset</span></tt> 开始。</p>
+<p>不存在的 <tt class="docutils literal"><span class="pre">key</span></tt> 当作空白字符串处理。</p>
+<p><a class="reference internal" href="#setrange">SETRANGE</a> 命令会确保字符串足够长以便将 <tt class="docutils literal"><span class="pre">value</span></tt> 设置在指定的偏移量上，如果给定 <tt class="docutils literal"><span class="pre">key</span></tt> 原来储存的字符串长度比偏移量小(比如字符串只有 <tt class="docutils literal"><span class="pre">5</span></tt> 个字符长，但你设置的 <tt class="docutils literal"><span class="pre">offset</span></tt> 是 <tt class="docutils literal"><span class="pre">10</span></tt> )，那么原字符和偏移量之间的空白将用零字节(zerobytes, <tt class="docutils literal"><span class="pre">&quot;\x00&quot;</span></tt> )来填充。</p>
+<p>注意你能使用的最大偏移量是 2^29-1(536870911) ，因为 Redis 字符串的大小被限制在 512 兆(megabytes)以内。如果你需要使用比这更大的空间，你可以使用多个 <tt class="docutils literal"><span class="pre">key</span></tt> 。</p>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">当生成一个很长的字符串时，Redis 需要分配内存空间，该操作有时候可能会造成服务器阻塞(block)。在2010年的Macbook Pro上，设置偏移量为 536870911(512MB 内存分配)，耗费约 300 毫秒，
+设置偏移量为 134217728(128MB 内存分配)，耗费约 80 毫秒，设置偏移量 33554432(32MB 内存分配)，耗费约 30 毫秒，设置偏移量为 8388608(8MB 内存分配)，耗费约 8 毫秒。
+注意若首次内存分配成功之后，再对同一个 <tt class="docutils literal"><span class="pre">key</span></tt> 调用 <a class="reference internal" href="#setrange">SETRANGE</a> 操作，无须再重新内存。</p>
+</div>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.2.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">对小(small)的字符串，平摊复杂度O(1)。(关于什么字符串是&#8221;小&#8221;的，请参考 <a class="reference internal" href="append.html#append"><em>APPEND</em></a> 命令)</div>
+<div class="line">否则为O(M)， <tt class="docutils literal"><span class="pre">M</span></tt> 为 <tt class="docutils literal"><span class="pre">value</span></tt> 参数的长度。</div>
+</div>
+</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>被 <a class="reference internal" href="#setrange">SETRANGE</a> 修改之后，字符串的长度。</dd>
+</dl>
+<div class="highlight-python"><pre># 对非空字符串进行 SETRANGE
+
+redis&gt; SET greeting "hello world"
+OK
+
+redis&gt; SETRANGE greeting 6 "Redis"
+(integer) 11
+
+redis&gt; GET greeting
+"hello Redis"
+
+
+# 对空字符串/不存在的 key 进行 SETRANGE
+
+redis&gt; EXISTS empty_string
+(integer) 0
+
+redis&gt; SETRANGE empty_string 5 "Redis!"   # 对不存在的 key 使用 SETRANGE
+(integer) 11
+
+redis&gt; GET empty_string                   # 空白处被"\x00"填充
+"\x00\x00\x00\x00\x00Redis!"</pre>
+</div>
+<div class="section" id="id2">
+<h2>模式<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>因为有了 <a class="reference internal" href="#setrange">SETRANGE</a> 和 <a class="reference internal" href="getrange.html#getrange"><em>GETRANGE</em></a> 命令，你可以将 Redis 字符串用作具有O(1)随机访问时间的线性数组，这在很多真实用例中都是非常快速且高效的储存方式，具体请参考 <a class="reference internal" href="append.html#append"><em>APPEND</em></a> 命令的『模式：时间序列』部分。</p>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="strlen.html" title="STRLEN"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="setnx.html" title="SETNX"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >String（字符串）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/string/setrange.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

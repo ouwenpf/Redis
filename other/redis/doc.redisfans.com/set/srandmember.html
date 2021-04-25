@@ -1,0 +1,248 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/set/srandmember.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SRANDMEMBER &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Set（集合）" href="index.html" />
+    <link rel="next" title="SREM" href="srem.html" />
+    <link rel="prev" title="SPOP" href="spop.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "set/srandmember",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "set/srandmember";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="srem.html" title="SREM"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="spop.html" title="SPOP"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Set（集合）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="srandmember">
+<span id="id1"></span><h1>SRANDMEMBER<a class="headerlink" href="#srandmember" title="Permalink to this headline">¶</a></h1>
+<p><strong>SRANDMEMBER key [count]</strong></p>
+<p>如果命令执行时，只提供了 <tt class="docutils literal"><span class="pre">key</span></tt> 参数，那么返回集合中的一个随机元素。</p>
+<p>从 Redis 2.6 版本开始， <a class="reference internal" href="#srandmember">SRANDMEMBER</a> 命令接受可选的 <tt class="docutils literal"><span class="pre">count</span></tt> 参数：</p>
+<ul class="simple">
+<li>如果 <tt class="docutils literal"><span class="pre">count</span></tt> 为正数，且小于集合基数，那么命令返回一个包含 <tt class="docutils literal"><span class="pre">count</span></tt> 个元素的数组，数组中的元素<strong>各不相同</strong>。如果 <tt class="docutils literal"><span class="pre">count</span></tt> 大于等于集合基数，那么返回整个集合。</li>
+<li>如果 <tt class="docutils literal"><span class="pre">count</span></tt> 为负数，那么命令返回一个数组，数组中的元素<strong>可能会重复出现多次</strong>，而数组的长度为 <tt class="docutils literal"><span class="pre">count</span></tt> 的绝对值。</li>
+</ul>
+<p>该操作和 <a class="reference internal" href="spop.html#spop"><em>SPOP</em></a> 相似，但 <a class="reference internal" href="spop.html#spop"><em>SPOP</em></a> 将随机元素从集合中移除并返回，而 <a class="reference internal" href="#srandmember">SRANDMEMBER</a> 则仅仅返回随机元素，而不对集合进行任何改动。</p>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 1.0.0</dd>
+<dt><strong>时间复杂度:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">只提供 <tt class="docutils literal"><span class="pre">key</span></tt> 参数时为 O(1) 。</div>
+<div class="line">如果提供了 <tt class="docutils literal"><span class="pre">count</span></tt> 参数，那么为 O(N) ，N 为返回数组的元素个数。</div>
+</div>
+</dd>
+<dt><strong>返回值:</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">只提供 <tt class="docutils literal"><span class="pre">key</span></tt> 参数时，返回一个元素；如果集合为空，返回 <tt class="docutils literal"><span class="pre">nil</span></tt> 。</div>
+<div class="line">如果提供了 <tt class="docutils literal"><span class="pre">count</span></tt> 参数，那么返回一个数组；如果集合为空，返回空数组。</div>
+</div>
+</dd>
+</dl>
+<div class="highlight-python"><pre># 添加元素
+
+redis&gt; SADD fruit apple banana cherry
+(integer) 3
+
+# 只给定 key 参数，返回一个随机元素
+
+redis&gt; SRANDMEMBER fruit
+"cherry"
+
+redis&gt; SRANDMEMBER fruit
+"apple"
+
+# 给定 3 为 count 参数，返回 3 个随机元素
+# 每个随机元素都不相同
+
+redis&gt; SRANDMEMBER fruit 3
+1) "apple"
+2) "banana"
+3) "cherry"
+
+# 给定 -3 为 count 参数，返回 3 个随机元素
+# 元素可能会重复出现多次
+
+redis&gt; SRANDMEMBER fruit -3
+1) "banana"
+2) "cherry"
+3) "apple"
+
+redis&gt; SRANDMEMBER fruit -3
+1) "apple"
+2) "apple"
+3) "cherry"
+
+# 如果 count 是整数，且大于等于集合基数，那么返回整个集合
+
+redis&gt; SRANDMEMBER fruit 10
+1) "apple"
+2) "banana"
+3) "cherry"
+
+# 如果 count 是负数，且 count 的绝对值大于集合的基数
+# 那么返回的数组的长度为 count 的绝对值
+
+redis&gt; SRANDMEMBER fruit -10
+1) "banana"
+2) "apple"
+3) "banana"
+4) "cherry"
+5) "apple"
+6) "apple"
+7) "cherry"
+8) "apple"
+9) "apple"
+10) "banana"
+
+# SRANDMEMBER 并不会修改集合内容
+
+redis&gt; SMEMBERS fruit
+1) "apple"
+2) "cherry"
+3) "banana"
+
+# 集合为空时返回 nil 或者空数组
+
+redis&gt; SRANDMEMBER not-exists
+(nil)
+
+redis&gt; SRANDMEMBER not-eixsts 10
+(empty list or set)</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="srem.html" title="SREM"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="spop.html" title="SPOP"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Set（集合）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/set/srandmember.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

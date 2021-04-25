@@ -1,0 +1,185 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/server/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Server（服务器） &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="next" title="BGREWRITEAOF" href="bgrewriteaof.html" />
+    <link rel="prev" title="SELECT" href="../connection/select.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "server/index",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "server/index";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="bgrewriteaof.html" title="BGREWRITEAOF"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../connection/select.html" title="SELECT"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="server">
+<h1>Server（服务器）<a class="headerlink" href="#server" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bgrewriteaof.html">BGREWRITEAOF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bgsave.html">BGSAVE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_getname.html">CLIENT GETNAME</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_kill.html">CLIENT KILL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_list.html">CLIENT LIST</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client_setname.html">CLIENT SETNAME</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_get.html">CONFIG GET</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_resetstat.html">CONFIG RESETSTAT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config_rewrite.html">CONFIG REWRITE</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="config_rewrite.html#id2">原子性重写</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config_rewrite.html#id3">可用版本</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config_rewrite.html#id4">返回值</a></li>
+<li class="toctree-l2"><a class="reference internal" href="config_rewrite.html#id5">测试</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config_set.html">CONFIG SET</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dbsize.html">DBSIZE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_object.html">DEBUG OBJECT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="debug_segfault.html">DEBUG SEGFAULT</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flushall.html">FLUSHALL</a></li>
+<li class="toctree-l1"><a class="reference internal" href="flushdb.html">FLUSHDB</a></li>
+<li class="toctree-l1"><a class="reference internal" href="info.html">INFO</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lastsave.html">LASTSAVE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="monitor.html">MONITOR</a></li>
+<li class="toctree-l1"><a class="reference internal" href="psync.html">PSYNC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="save.html">SAVE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shutdown.html">SHUTDOWN</a></li>
+<li class="toctree-l1"><a class="reference internal" href="slaveof.html">SLAVEOF</a></li>
+<li class="toctree-l1"><a class="reference internal" href="slowlog.html">SLOWLOG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sync.html">SYNC</a></li>
+<li class="toctree-l1"><a class="reference internal" href="time.html">TIME</a></li>
+</ul>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="bgrewriteaof.html" title="BGREWRITEAOF"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../connection/select.html" title="SELECT"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/server/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+</html>

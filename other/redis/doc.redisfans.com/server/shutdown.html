@@ -1,0 +1,192 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/server/shutdown.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>SHUTDOWN &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Server（服务器）" href="index.html" />
+    <link rel="next" title="SLAVEOF" href="slaveof.html" />
+    <link rel="prev" title="SAVE" href="save.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "server/shutdown",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "server/shutdown";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="slaveof.html" title="SLAVEOF"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="save.html" title="SAVE"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="shutdown">
+<span id="id1"></span><h1>SHUTDOWN<a class="headerlink" href="#shutdown" title="Permalink to this headline">¶</a></h1>
+<p><strong>SHUTDOWN</strong></p>
+<p><a class="reference internal" href="#shutdown">SHUTDOWN</a> 命令执行以下操作：</p>
+<ul class="simple">
+<li>停止所有客户端</li>
+<li>如果有至少一个保存点在等待，执行 <a class="reference internal" href="save.html#save"><em>SAVE</em></a> 命令</li>
+<li>如果 AOF 选项被打开，更新 AOF 文件</li>
+<li>关闭 redis 服务器(server)</li>
+</ul>
+<p>如果持久化被打开的话， <a class="reference internal" href="#shutdown">SHUTDOWN</a> 命令会保证服务器正常关闭而不丢失任何数据。</p>
+<p>另一方面，假如只是单纯地执行 <a class="reference internal" href="save.html#save"><em>SAVE</em></a> 命令，然后再执行 <a class="reference internal" href="../connection/quit.html#quit"><em>QUIT</em></a> 命令，则没有这一保证 —— 因为在执行 <a class="reference internal" href="save.html#save"><em>SAVE</em></a> 之后、执行 <a class="reference internal" href="../connection/quit.html#quit"><em>QUIT</em></a> 之前的这段时间中间，其他客户端可能正在和服务器进行通讯，这时如果执行 <a class="reference internal" href="../connection/quit.html#quit"><em>QUIT</em></a> 就会造成数据丢失。</p>
+<p><strong>SAVE 和 NOSAVE 修饰符</strong></p>
+<p>通过使用可选的修饰符，可以修改 <a class="reference internal" href="#shutdown">SHUTDOWN</a> 命令的表现。比如说：</p>
+<ul class="simple">
+<li>执行 <tt class="docutils literal"><span class="pre">SHUTDOWN</span> <span class="pre">SAVE</span></tt> 会强制让数据库执行保存操作，即使没有设定(configure)保存点</li>
+<li>执行 <tt class="docutils literal"><span class="pre">SHUTDOWN</span> <span class="pre">NOSAVE</span></tt> 会阻止数据库执行保存操作，即使已经设定有一个或多个保存点(你可以将这一用法看作是强制停止服务器的一个假想的 ABORT 命令)</li>
+</ul>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 1.0.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd>不明确</dd>
+<dt><strong>返回值：</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">执行失败时返回错误。</div>
+<div class="line">执行成功时不返回任何信息，服务器和客户端的连接断开，客户端自动退出。</div>
+</div>
+</dd>
+</dl>
+<div class="highlight-python"><pre>redis&gt; PING
+PONG
+
+redis&gt; SHUTDOWN
+
+$
+
+$ redis
+Could not connect to Redis at: Connection refused
+not connected&gt;</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="slaveof.html" title="SLAVEOF"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="save.html" title="SAVE"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/server/shutdown.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+</html>

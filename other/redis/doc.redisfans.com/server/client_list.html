@@ -1,0 +1,215 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/server/client_list.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>CLIENT LIST &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Server（服务器）" href="index.html" />
+    <link rel="next" title="CLIENT SETNAME" href="client_setname.html" />
+    <link rel="prev" title="CLIENT KILL" href="client_kill.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "server/client_list",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "server/client_list";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="client_setname.html" title="CLIENT SETNAME"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="client_kill.html" title="CLIENT KILL"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="client-list">
+<span id="id1"></span><h1>CLIENT LIST<a class="headerlink" href="#client-list" title="Permalink to this headline">¶</a></h1>
+<p><strong>CLIENT LIST</strong></p>
+<p>以人类可读的格式，返回所有连接到服务器的客户端信息和统计数据。</p>
+<div class="highlight-python"><pre>redis&gt; CLIENT LIST
+addr=127.0.0.1:43143 fd=6 age=183 idle=0 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=32768 obl=0 oll=0 omem=0 events=r cmd=client
+addr=127.0.0.1:43163 fd=5 age=35 idle=15 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=0 obl=0 oll=0 omem=0 events=r cmd=ping
+addr=127.0.0.1:43167 fd=7 age=24 idle=6 flags=N db=0 sub=0 psub=0 multi=-1 qbuf=0 qbuf-free=0 obl=0 oll=0 omem=0 events=r cmd=get</pre>
+</div>
+<dl class="docutils">
+<dt><strong>可用版本</strong></dt>
+<dd>&gt;= 2.4.0</dd>
+<dt><strong>时间复杂度</strong></dt>
+<dd>O(N) ， N 为连接到服务器的客户端数量。</dd>
+<dt><strong>返回值</strong></dt>
+<dd><p class="first">命令返回多行字符串，这些字符串按以下形式被格式化：</p>
+<ul class="simple">
+<li>每个已连接客户端对应一行（以 <tt class="docutils literal"><span class="pre">LF</span></tt> 分割）</li>
+<li>每行字符串由一系列 <tt class="docutils literal"><span class="pre">属性=值</span></tt> 形式的域组成，每个域之间以空格分开</li>
+</ul>
+<p>以下是域的含义：</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">addr</span></tt> ： 客户端的地址和端口</li>
+<li><tt class="docutils literal"><span class="pre">fd</span></tt> ： 套接字所使用的文件描述符</li>
+<li><tt class="docutils literal"><span class="pre">age</span></tt> ： 以秒计算的已连接时长</li>
+<li><tt class="docutils literal"><span class="pre">idle</span></tt> ： 以秒计算的空闲时长</li>
+<li><tt class="docutils literal"><span class="pre">flags</span></tt> ： 客户端 flag （见下文）</li>
+<li><tt class="docutils literal"><span class="pre">db</span></tt> ： 该客户端正在使用的数据库 ID</li>
+<li><tt class="docutils literal"><span class="pre">sub</span></tt> ： 已订阅频道的数量</li>
+<li><tt class="docutils literal"><span class="pre">psub</span></tt> ： 已订阅模式的数量</li>
+<li><tt class="docutils literal"><span class="pre">multi</span></tt> ： 在事务中被执行的命令数量</li>
+<li><tt class="docutils literal"><span class="pre">qbuf</span></tt> ： 查询缓存的长度（ <tt class="docutils literal"><span class="pre">0</span></tt> 表示没有查询在等待）</li>
+<li><tt class="docutils literal"><span class="pre">qbuf-free</span></tt> ： 查询缓存的剩余空间（ <tt class="docutils literal"><span class="pre">0</span></tt> 表示没有剩余空间）</li>
+<li><tt class="docutils literal"><span class="pre">obl</span></tt> ： 输出缓存的长度</li>
+<li><tt class="docutils literal"><span class="pre">oll</span></tt> ： 输出列表的长度（当输出缓存没有剩余空间时，回复被入队到这个队列里）</li>
+<li><tt class="docutils literal"><span class="pre">omem</span></tt> ： 输出缓存的内存占用量</li>
+<li><tt class="docutils literal"><span class="pre">events</span></tt> ： 文件描述符事件（见下文）</li>
+<li><tt class="docutils literal"><span class="pre">cmd</span></tt> ： 最近一次执行的命令</li>
+</ul>
+<p>客户端 flag 可以由以下部分组成：</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">O</span></tt> ： 客户端是 MONITOR 模式下的附属节点（slave）</li>
+<li><tt class="docutils literal"><span class="pre">S</span></tt> ： 客户端是一般模式下（normal）的附属节点</li>
+<li><tt class="docutils literal"><span class="pre">M</span></tt> ： 客户端是主节点（master）</li>
+<li><tt class="docutils literal"><span class="pre">x</span></tt> ： 客户端正在执行事务</li>
+<li><tt class="docutils literal"><span class="pre">b</span></tt> ： 客户端正在等待阻塞事件</li>
+<li><tt class="docutils literal"><span class="pre">i</span></tt> ： 客户端正在等待 VM I/O 操作（已废弃）</li>
+<li><tt class="docutils literal"><span class="pre">d</span></tt> ： 一个受监视（watched）的键已被修改， <tt class="docutils literal"><span class="pre">EXEC</span></tt> 命令将失败</li>
+<li><tt class="docutils literal"><span class="pre">c</span></tt> : 在将回复完整地写出之后，关闭链接</li>
+<li><tt class="docutils literal"><span class="pre">u</span></tt> : 客户端未被阻塞（unblocked）</li>
+<li><tt class="docutils literal"><span class="pre">A</span></tt> : 尽可能快地关闭连接</li>
+<li><tt class="docutils literal"><span class="pre">N</span></tt> : 未设置任何 flag</li>
+</ul>
+<p>文件描述符事件可以是：</p>
+<ul class="last simple">
+<li><tt class="docutils literal"><span class="pre">r</span></tt> : 客户端套接字（在事件 loop 中）是可读的（readable）</li>
+<li><tt class="docutils literal"><span class="pre">w</span></tt> : 客户端套接字（在事件 loop 中）是可写的（writeable）</li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">为了 debug 的需要，经常会对域进行添加和删除，一个安全的 Redis 客户端应该可以对 <tt class="docutils literal"><span class="pre">CLIENT</span> <span class="pre">LIST</span></tt> 的输出进行相应的处理（parse），比如忽略不存在的域，跳过未知域，诸如此类。</p>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="client_setname.html" title="CLIENT SETNAME"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="client_kill.html" title="CLIENT KILL"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Server（服务器）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/server/client_list.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:52 GMT -->
+</html>

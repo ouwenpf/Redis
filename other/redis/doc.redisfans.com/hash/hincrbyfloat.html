@@ -1,0 +1,213 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/hash/hincrbyfloat.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>HINCRBYFLOAT &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Hash（哈希表）" href="index.html" />
+    <link rel="next" title="HKEYS" href="hkeys.html" />
+    <link rel="prev" title="HINCRBY" href="hincrby.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "hash/hincrbyfloat",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "hash/hincrbyfloat";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="hkeys.html" title="HKEYS"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="hincrby.html" title="HINCRBY"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Hash（哈希表）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="hincrbyfloat">
+<span id="id1"></span><h1>HINCRBYFLOAT<a class="headerlink" href="#hincrbyfloat" title="Permalink to this headline">¶</a></h1>
+<p><strong>HINCRBYFLOAT key field increment</strong></p>
+<p>为哈希表 <tt class="docutils literal"><span class="pre">key</span></tt> 中的域 <tt class="docutils literal"><span class="pre">field</span></tt> 加上浮点数增量 <tt class="docutils literal"><span class="pre">increment</span></tt> 。</p>
+<p>如果哈希表中没有域 <tt class="docutils literal"><span class="pre">field</span></tt> ，那么 <a class="reference internal" href="#hincrbyfloat">HINCRBYFLOAT</a> 会先将域 <tt class="docutils literal"><span class="pre">field</span></tt> 的值设为 <tt class="docutils literal"><span class="pre">0</span></tt> ，然后再执行加法操作。</p>
+<p>如果键 <tt class="docutils literal"><span class="pre">key</span></tt> 不存在，那么 <a class="reference internal" href="#hincrbyfloat">HINCRBYFLOAT</a> 会先创建一个哈希表，再创建域 <tt class="docutils literal"><span class="pre">field</span></tt> ，最后再执行加法操作。</p>
+<p>当以下任意一个条件发生时，返回一个错误：</p>
+<ul class="simple">
+<li>域 <tt class="docutils literal"><span class="pre">field</span></tt> 的值不是字符串类型(因为 redis 中的数字和浮点数都以字符串的形式保存，所以它们都属于字符串类型）</li>
+<li>域 <tt class="docutils literal"><span class="pre">field</span></tt> 当前的值或给定的增量 <tt class="docutils literal"><span class="pre">increment</span></tt> 不能解释(parse)为双精度浮点数(double precision floating point number)</li>
+</ul>
+<p><a class="reference internal" href="#hincrbyfloat">HINCRBYFLOAT</a> 命令的详细功能和 <a class="reference internal" href="../string/incrbyfloat.html#incrbyfloat"><em>INCRBYFLOAT</em></a> 命令类似，请查看 <a class="reference internal" href="../string/incrbyfloat.html#incrbyfloat"><em>INCRBYFLOAT</em></a> 命令获取更多相关信息。</p>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.6.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd>O(1)</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>执行加法操作之后 <tt class="docutils literal"><span class="pre">field</span></tt> 域的值。</dd>
+</dl>
+<div class="highlight-python"><pre># 值和增量都是普通小数
+
+redis&gt; HSET mykey field 10.50
+(integer) 1
+redis&gt; HINCRBYFLOAT mykey field 0.1
+"10.6"
+
+
+# 值和增量都是指数符号
+
+redis&gt; HSET mykey field 5.0e3
+(integer) 0
+redis&gt; HINCRBYFLOAT mykey field 2.0e2
+"5200"
+
+
+# 对不存在的键执行 HINCRBYFLOAT
+
+redis&gt; EXISTS price
+(integer) 0
+redis&gt; HINCRBYFLOAT price milk 3.5
+"3.5"
+redis&gt; HGETALL price
+1) "milk"
+2) "3.5"
+
+
+# 对不存在的域进行 HINCRBYFLOAT
+
+redis&gt; HGETALL price
+1) "milk"
+2) "3.5"
+redis&gt; HINCRBYFLOAT price coffee 4.5   # 新增 coffee 域
+"4.5"
+redis&gt; HGETALL price
+1) "milk"
+2) "3.5"
+3) "coffee"
+4) "4.5"</pre>
+</div>
+</div>
+
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="hkeys.html" title="HKEYS"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="hincrby.html" title="HINCRBY"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Hash（哈希表）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/hash/hincrbyfloat.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

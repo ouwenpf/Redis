@@ -1,0 +1,208 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/sorted_set/zrangebyscore.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>ZRANGEBYSCORE &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="SortedSet（有序集合）" href="index.html" />
+    <link rel="next" title="ZRANK" href="zrank.html" />
+    <link rel="prev" title="ZRANGE" href="zrange.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "sorted_set/zrangebyscore",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "sorted_set/zrangebyscore";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="zrank.html" title="ZRANK"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="zrange.html" title="ZRANGE"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">SortedSet（有序集合）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="zrangebyscore">
+<span id="id1"></span><h1>ZRANGEBYSCORE<a class="headerlink" href="#zrangebyscore" title="Permalink to this headline">¶</a></h1>
+<p><strong>ZRANGEBYSCORE key min max [WITHSCORES] [LIMIT offset count]</strong></p>
+<p>返回有序集 <tt class="docutils literal"><span class="pre">key</span></tt> 中，所有 <tt class="docutils literal"><span class="pre">score</span></tt> 值介于 <tt class="docutils literal"><span class="pre">min</span></tt> 和 <tt class="docutils literal"><span class="pre">max</span></tt> 之间(包括等于 <tt class="docutils literal"><span class="pre">min</span></tt> 或 <tt class="docutils literal"><span class="pre">max</span></tt> )的成员。有序集成员按 <tt class="docutils literal"><span class="pre">score</span></tt> 值递增(从小到大)次序排列。</p>
+<p>具有相同 <tt class="docutils literal"><span class="pre">score</span></tt> 值的成员按字典序(<a class="reference external" href="http://en.wikipedia.org/wiki/Lexicographical_order">lexicographical order</a>)来排列(该属性是有序集提供的，不需要额外的计算)。</p>
+<p>可选的 <tt class="docutils literal"><span class="pre">LIMIT</span></tt> 参数指定返回结果的数量及区间(就像SQL中的 <tt class="docutils literal"><span class="pre">SELECT</span> <span class="pre">LIMIT</span> <span class="pre">offset,</span> <span class="pre">count</span></tt> )，注意当 <tt class="docutils literal"><span class="pre">offset</span></tt> 很大时，定位 <tt class="docutils literal"><span class="pre">offset</span></tt> 的操作可能需要遍历整个有序集，此过程最坏复杂度为 O(N) 时间。</p>
+<div class="line-block">
+<div class="line">可选的 <tt class="docutils literal"><span class="pre">WITHSCORES</span></tt> 参数决定结果集是单单返回有序集的成员，还是将有序集成员及其 <tt class="docutils literal"><span class="pre">score</span></tt> 值一起返回。</div>
+<div class="line">该选项自 Redis 2.0 版本起可用。</div>
+</div>
+<p><strong>区间及无限</strong></p>
+<p><tt class="docutils literal"><span class="pre">min</span></tt> 和 <tt class="docutils literal"><span class="pre">max</span></tt> 可以是 <tt class="docutils literal"><span class="pre">-inf</span></tt> 和 <tt class="docutils literal"><span class="pre">+inf</span></tt> ，这样一来，你就可以在不知道有序集的最低和最高 <tt class="docutils literal"><span class="pre">score</span></tt> 值的情况下，使用 <a class="reference internal" href="#zrangebyscore">ZRANGEBYSCORE</a> 这类命令。</p>
+<p>默认情况下，区间的取值使用<a class="reference external" href="http://zh.wikipedia.org/wiki/區間">闭区间</a> (小于等于或大于等于)，你也可以通过给参数前增加 <tt class="docutils literal"><span class="pre">(</span></tt> 符号来使用可选的<a class="reference external" href="http://zh.wikipedia.org/wiki/區間">开区间</a> (小于或大于)。</p>
+<p>举个例子：</p>
+<div class="highlight-python"><pre>ZRANGEBYSCORE zset (1 5</pre>
+</div>
+<p>返回所有符合条件 <tt class="docutils literal"><span class="pre">1</span> <span class="pre">&lt;</span> <span class="pre">score</span> <span class="pre">&lt;=</span> <span class="pre">5</span></tt> 的成员，而</p>
+<div class="highlight-python"><pre>ZRANGEBYSCORE zset (5 (10</pre>
+</div>
+<p>则返回所有符合条件 <tt class="docutils literal"><span class="pre">5</span> <span class="pre">&lt;</span> <span class="pre">score</span> <span class="pre">&lt;</span> <span class="pre">10</span></tt> 的成员。</p>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 1.0.5</dd>
+<dt><strong>时间复杂度:</strong></dt>
+<dd>O(log(N)+M)， <tt class="docutils literal"><span class="pre">N</span></tt> 为有序集的基数， <tt class="docutils literal"><span class="pre">M</span></tt> 为被结果集的基数。</dd>
+<dt><strong>返回值:</strong></dt>
+<dd>指定区间内，带有 <tt class="docutils literal"><span class="pre">score</span></tt> 值(可选)的有序集成员的列表。</dd>
+</dl>
+<div class="highlight-python"><pre>redis&gt; ZADD salary 2500 jack                        # 测试数据
+(integer) 0
+redis&gt; ZADD salary 5000 tom
+(integer) 0
+redis&gt; ZADD salary 12000 peter
+(integer) 0
+
+redis&gt; ZRANGEBYSCORE salary -inf +inf               # 显示整个有序集
+1) "jack"
+2) "tom"
+3) "peter"
+
+redis&gt; ZRANGEBYSCORE salary -inf +inf WITHSCORES    # 显示整个有序集及成员的 score 值
+1) "jack"
+2) "2500"
+3) "tom"
+4) "5000"
+5) "peter"
+6) "12000"
+
+redis&gt; ZRANGEBYSCORE salary -inf 5000 WITHSCORES    # 显示工资 &lt;=5000 的所有成员
+1) "jack"
+2) "2500"
+3) "tom"
+4) "5000"
+
+redis&gt; ZRANGEBYSCORE salary (5000 400000            # 显示工资大于 5000 小于等于 400000 的成员
+1) "peter"</pre>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="zrank.html" title="ZRANK"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="zrange.html" title="ZRANGE"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >SortedSet（有序集合）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/sorted_set/zrangebyscore.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>

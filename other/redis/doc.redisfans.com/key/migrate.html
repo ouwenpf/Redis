@@ -1,0 +1,218 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<!-- Mirrored from doc.redisfans.com/key/migrate.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>MIGRATE &mdash; Redis 命令参考</title>
+    
+    <link rel="stylesheet" href="../_static/pyramid.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/badge_only.css" type="text/css" />
+    <link rel="stylesheet" href="../static/css/readthedocs-doc-embed.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '2.8',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../static/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js"></script>
+    <script type="text/javascript" src="../static/js/underscore.js"></script>
+    <script type="text/javascript" src="../static/js/doctools.js"></script>
+    <script type="text/javascript" src="../static/js/readthedocs-doc-embed.js"></script>
+    <link rel="top" title="Redis 命令参考" href="../index-2.html" />
+    <link rel="up" title="Key（键）" href="index.html" />
+    <link rel="next" title="MOVE" href="move.html" />
+    <link rel="prev" title="KEYS" href="keys.html" />
+ 
+
+<link rel="stylesheet" href="../../fonts.googleapis.com/css45f9.css?family=Neuton&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../../fonts.googleapis.com/css42aa.css?family=Nobile:regular,italic,bold,bolditalic&amp;subset=latin" type="text/css" media="screen" charset="utf-8" />
+<!--[if lte IE 6]>
+<link rel="stylesheet" href="../_static/ie6.css" type="text/css" media="screen" charset="utf-8" />
+<![endif]-->
+
+
+<!-- RTD Extra Head -->
+<script type="text/javascript">
+  // This is included here because other places don't have access to the pagename variable.
+  var READTHEDOCS_DATA = {
+    project: "redis",
+    version: "latest",
+    page: "key/migrate",
+    theme: "der",
+    docroot: "/"
+  }
+  // Old variables
+  var doc_version = "latest";
+  var doc_slug = "redis";
+  var page_name = "key/migrate";
+  var html_theme = "der";
+</script>
+<!-- RTD Analytics Code -->
+<!-- Included in the header because you don't have a footer block. -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-17997319-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- end RTD Analytics Code -->
+
+
+<!-- User Analytics Code -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-31527501-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End User Analytics Code -->
+
+<!-- end RTD <extrahead> -->
+
+  </head>
+  <body>
+
+
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="move.html" title="MOVE"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="keys.html" title="KEYS"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" accesskey="U">Key（键）</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="migrate">
+<span id="id1"></span><h1>MIGRATE<a class="headerlink" href="#migrate" title="Permalink to this headline">¶</a></h1>
+<p><strong>MIGRATE host port key destination-db timeout [COPY] [REPLACE]</strong></p>
+<p>将 <tt class="docutils literal"><span class="pre">key</span></tt> 原子性地从当前实例传送到目标实例的指定数据库上，一旦传送成功， <tt class="docutils literal"><span class="pre">key</span></tt> 保证会出现在目标实例上，而当前实例上的 <tt class="docutils literal"><span class="pre">key</span></tt> 会被删除。</p>
+<p>这个命令是一个原子操作，它在执行的时候会阻塞进行迁移的两个实例，直到以下任意结果发生：迁移成功，迁移失败，等到超时。</p>
+<p>命令的内部实现是这样的：它在当前实例对给定 <tt class="docutils literal"><span class="pre">key</span></tt> 执行 <a class="reference internal" href="dump.html"><em>DUMP</em></a> 命令 ，将它序列化，然后传送到目标实例，目标实例再使用 <a class="reference internal" href="restore.html"><em>RESTORE</em></a> 对数据进行反序列化，并将反序列化所得的数据添加到数据库中；当前实例就像目标实例的客户端那样，只要看到 <a class="reference internal" href="restore.html"><em>RESTORE</em></a> 命令返回 <tt class="docutils literal"><span class="pre">OK</span></tt> ，它就会调用 <a class="reference internal" href="del.html"><em>DEL</em></a>  删除自己数据库上的 <tt class="docutils literal"><span class="pre">key</span></tt> 。</p>
+<p><tt class="docutils literal"><span class="pre">timeout</span></tt> 参数以毫秒为格式，指定当前实例和目标实例进行沟通的<strong>最大间隔时间</strong>。这说明操作并不一定要在 <tt class="docutils literal"><span class="pre">timeout</span></tt> 毫秒内完成，只是说数据传送的时间不能超过这个 <tt class="docutils literal"><span class="pre">timeout</span></tt> 数。</p>
+<p><a class="reference internal" href="#migrate">MIGRATE</a> 命令需要在给定的时间规定内完成 IO 操作。如果在传送数据时发生 IO 错误，或者达到了超时时间，那么命令会停止执行，并返回一个特殊的错误： <tt class="docutils literal"><span class="pre">IOERR</span></tt> 。</p>
+<p>当 <tt class="docutils literal"><span class="pre">IOERR</span></tt> 出现时，有以下两种可能：</p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">key</span></tt> 可能存在于两个实例</li>
+<li><tt class="docutils literal"><span class="pre">key</span></tt> 可能只存在于当前实例</li>
+</ul>
+<p>唯一不可能发生的情况就是丢失 <tt class="docutils literal"><span class="pre">key</span></tt> ，因此，如果一个客户端执行 <a class="reference internal" href="#migrate">MIGRATE</a> 命令，并且不幸遇上 <tt class="docutils literal"><span class="pre">IOERR</span></tt> 错误，那么这个客户端唯一要做的就是检查自己数据库上的 <tt class="docutils literal"><span class="pre">key</span></tt> 是否已经被正确地删除。</p>
+<p>如果有其他错误发生，那么 <a class="reference internal" href="#migrate">MIGRATE</a>  保证 <tt class="docutils literal"><span class="pre">key</span></tt> 只会出现在当前实例中。（当然，目标实例的给定数据库上可能有和 <tt class="docutils literal"><span class="pre">key</span></tt> 同名的键，不过这和 <a class="reference internal" href="#migrate">MIGRATE</a> 命令没有关系）。</p>
+<p><strong>可选项：</strong></p>
+<ul class="simple">
+<li><tt class="docutils literal"><span class="pre">COPY</span></tt> ：不移除源实例上的 <tt class="docutils literal"><span class="pre">key</span></tt> 。</li>
+<li><tt class="docutils literal"><span class="pre">REPLACE</span></tt> ：替换目标实例上已存在的 <tt class="docutils literal"><span class="pre">key</span></tt> 。</li>
+</ul>
+<dl class="docutils">
+<dt><strong>可用版本：</strong></dt>
+<dd>&gt;= 2.6.0</dd>
+<dt><strong>时间复杂度：</strong></dt>
+<dd><div class="first last line-block">
+<div class="line">这个命令在源实例上实际执行 <a class="reference internal" href="dump.html"><em>DUMP</em></a> 命令和 <a class="reference internal" href="del.html"><em>DEL</em></a> 命令，在目标实例执行 <a class="reference internal" href="restore.html"><em>RESTORE</em></a> 命令，查看以上命令的文档可以看到详细的复杂度说明。</div>
+<div class="line"><tt class="docutils literal"><span class="pre">key</span></tt> 数据在两个实例之间传输的复杂度为 O(N) 。</div>
+</div>
+</dd>
+<dt><strong>返回值：</strong></dt>
+<dd>迁移成功时返回 <tt class="docutils literal"><span class="pre">OK</span></tt> ，否则返回相应的错误。</dd>
+</dl>
+<div class="section" id="id2">
+<h2>示例<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>先启动两个 Redis 实例，一个使用默认的 6379 端口，一个使用 7777 端口。</p>
+<div class="highlight-python"><pre>$ ./redis-server &amp;
+[1] 3557
+
+...
+
+$ ./redis-server --port 7777 &amp;
+[2] 3560
+
+...</pre>
+</div>
+<p>然后用客户端连上 6379 端口的实例，设置一个键，然后将它迁移到 7777 端口的实例上：</p>
+<div class="highlight-python"><pre>$ ./redis-cli
+
+redis 127.0.0.1:6379&gt; flushdb
+OK
+
+redis 127.0.0.1:6379&gt; SET greeting "Hello from 6379 instance"
+OK
+
+redis 127.0.0.1:6379&gt; MIGRATE 127.0.0.1 7777 greeting 0 1000
+OK
+
+redis 127.0.0.1:6379&gt; EXISTS greeting                           # 迁移成功后 key 被删除
+(integer) 0</pre>
+</div>
+<p>使用另一个客户端，查看 7777 端口上的实例：</p>
+<div class="highlight-python"><pre>$ ./redis-cli -p 7777
+
+redis 127.0.0.1:7777&gt; GET greeting
+"Hello from 6379 instance"</pre>
+</div>
+</div>
+</div>
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="move.html" title="MOVE"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="keys.html" title="KEYS"
+             >previous</a> |</li>
+        <li><a href="../index-2.html">Redis 命令参考</a> &raquo;</li>
+          <li><a href="index.html" >Key（键）</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, Redis.
+      Last updated on Dec 20, 2013.
+      Created using <a href="http://www.redisfans.com/">Redis爱好者</a><script>var _hmt = _hmt || [];(function() {var hm = document.createElement("script");hm.src = "../../hm.baidu.com/hmd9ec.js?da80952cb055446c4998313ca0c80a85"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s);})();</script>
+    </div>
+  </body>
+
+<!-- Mirrored from doc.redisfans.com/key/migrate.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 13 Sep 2018 03:34:51 GMT -->
+</html>
