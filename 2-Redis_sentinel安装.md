@@ -68,7 +68,7 @@ cd  redis-6.2.1.tar.gz
 make 
 cd src
 make install PREFIX=/application/redis
-cp  ../redis.conf  /data/redis/conf
+cp  ../redis.conf  /data/redis/redis6379/conf
 
 配置文件:
 echo 'daemonize yes' >>  /data/redis/redis6379/conf/redis.conf

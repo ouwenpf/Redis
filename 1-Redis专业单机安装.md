@@ -3,8 +3,8 @@
 ## MySQL下载
 
 Redis下载唯一合法途径就是去官方下载，其它网上来源均不安全，作为dba人员请务必注意，推荐下载二进制包  
-[下载地址](https://download.redis.io/releases/)
-
+[下载地址](https://download.redis.io/releases/)  
+[相关资料](https://www.cnblogs.com/xibuhaohao/p/12580331.html)
 
 
 ## 安装前准备
@@ -68,7 +68,7 @@ cd  redis-6.2.1.tar.gz
 make 
 cd src
 make install PREFIX=/application/redis
-cp  ../redis.conf  /data/redis/conf
+cp  ../redis.conf  /data/redis/redis6379/conf
 
 配置文件:
 echo 'daemonize yes' >>  /data/redis/redis6379/conf/redis.conf

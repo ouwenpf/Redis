@@ -1,5 +1,5 @@
 
-# Redis专业环境安装
+# Redis_cluster专业环境安装
 
 ## Redis下载
 
@@ -90,13 +90,22 @@ CONFIG SET  requirepass 123456
 
 ```
 yum  install zlib-devel curl-devel openssl-devel   -y
+cd ruby-2.5.1
+./configure
+make
+make install
+ruby -v
 gem sources  --add source -a  https://gems.ruby-china.com/  --remove https://rubygems.org/
+gem source -l
+gem install redis
 
 redis-cli  --cluster help 查询集群命令帮助
 --[ERR] Node 10.0.10.11:6379 NOAUTH Authentication required配置文件中需要把密码认证注释掉
 redis-cli --cluster create 10.0.10.11:6379 10.0.10.12:6379 10.0.10.13:6379 10.0.10.14:6379 10.0.10.15:6379 10.0.10.16:6379 --cluster-replicas 1
 redis-cli -c -h 10.0.10.11 
 10.0.10.11:6379> CLUSTER NODES
+
+
 
 -- 添加节点(方法1)
 
