@@ -51,7 +51,9 @@ sysctl -w net.core.somaxconn=2048
 - 安装
 
 ```
-docker run -itd   -v /application:/application -v   /data/tools:/data/tools  -v /etc/resolv.conf:/etc/resolv.conf  --net mysqlnet --ip 10.0.10.11  --cap-add=SYS_PTRACE --cap-add=NET_ADMIN  --privileged=true --name redis-1 -h redis-1 redis/centos7:v1  /usr/sbin/init
+
+ ocker run -itd  -v /data/share:/data/share -p50000:50000  -v /data/app:/application -v  /etc/resolv.conf:/etc/resolv.conf  -v /etc/hosts:/etc/hosts -v /sys/fs/cgroup:/sys/fs/cgroup  --net myvpc  --ip 10.10.10.10  --cap-add=SYS_PTRACE --cap-add=NET_ADMIN  --privileged=true --name gcc_py   -h gcc_py  gcc_entos7:latest  /usr/sbin/init
+
 
 useradd redis
 mkdir  -p /application/redis 
