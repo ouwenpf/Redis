@@ -74,7 +74,7 @@ cp  ../redis.conf  /data/redis/conf
 
 配置文件:
 echo 'daemonize yes' >>  /data/redis/redis6379/conf/redis.conf
-echo  'logfile "/data/redis/redis6379/log/redis.log"'  >> /data/redis/redis6379/conf/redis.conf
+echo  'logfile "/data/redis/redis6379/logs/redis.log"'  >> /data/redis/redis6379/conf/redis.conf
 echo 'requirepass 123456'  >> /data/redis/redis6379/conf/redis.conf
 
 

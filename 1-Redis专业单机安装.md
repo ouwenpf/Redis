@@ -1,4 +1,4 @@
-# Redis专业环境安装
+:# Redis专业环境安装
 
 ## MySQL下载
 
@@ -40,9 +40,9 @@ sysctl -w vm.overcommit_memory=1
 
 echo never > /sys/kernel/mm/transparent_hugepage/enabled 
 解决:redis做rdb时候会有部分请求超时的case
-
 sysctl -w net.core.somaxconn=2048
 
+相关参数
 sysctl -w vm.overcommit_memory=1
 echo never > /sys/kernel/mm/transparent_hugepage/enabled 
 sysctl -w net.core.somaxconn=2048
@@ -52,7 +52,7 @@ sysctl -w net.core.somaxconn=2048
 
 ```
 
- ocker run -itd  -v /data/share:/data/share -p50000:50000  -v /data/app:/application -v  /etc/resolv.conf:/etc/resolv.conf  -v /etc/hosts:/etc/hosts -v /sys/fs/cgroup:/sys/fs/cgroup  --net myvpc  --ip 10.10.10.10  --cap-add=SYS_PTRACE --cap-add=NET_ADMIN  --privileged=true --name gcc_py   -h gcc_py  gcc_entos7:latest  /usr/sbin/init
+
 
 
 useradd redis

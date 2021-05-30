@@ -53,7 +53,7 @@ sysctl -w net.core.somaxconn=2048
 - 安装
 
 ```
-docker run -itd   -v /application:/application -v   /data/tools:/data/tools  -v /etc/resolv.conf:/etc/resolv.conf  --net mysqlnet --ip 10.0.10.11  --cap-add=SYS_PTRACE --cap-add=NET_ADMIN  --privileged=true --name redis-1 -h redis-1 redis/centos7:v1  /usr/sbin/init
+docker run -itd   -v /application:/application -v   /data/tools:/data/tools  -v /etc/resolv.conf:/etc/resolv.conf  --net myvpc --ip 10.0.10.11  --cap-add=SYS_PTRACE --cap-add=NET_ADMIN  --privileged=true --name redis-1 -h redis-1 redis/centos7:v1  /usr/sbin/init
 
 useradd redis
 mkdir  -p /application/redis 
@@ -74,7 +74,7 @@ cp  ../redis.conf  /data/redis/conf
 
 配置文件:
 echo 'daemonize yes' >>  /data/redis/redis6379/conf/redis.conf
-echo  'logfile "/data/redis/redis6379/log/redis.log"'  >> /data/redis/redis6379/conf/redis.conf
+echo  'logfile "/data/redis/redis6379/logs/redis.log"'  >> /data/redis/redis6379/conf/redis.conf
 echo 'requirepass 123456'  >> /data/redis/redis6379/conf/redis.conf
 
 

@@ -163,7 +163,7 @@ sentinel auth-pass mymaster 123456
 bind 10.0.10.11
 port 26379
 daemonize yes
-logfile "/data/redis/redis6379/log/sentinel.log"
+logfile "/data/redis/redis6379/logs/sentinel.log"
 dir /data/redis/redis6379/data
 
 启动查看
