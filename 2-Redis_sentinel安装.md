@@ -58,27 +58,19 @@ mkdir  -p /application/redis
 mkdir  -p  /data/redis/redis6379/{data,log,conf}
 chown redis:redis  /application/redis/
 chown -R  redis:redis  /data/redis/
- mv     redis-6.2.1  /home/redis/
- chown redis:redis  /home/redis/
+chown redis:redis  /home/redis/
+su - redis 
 sed   -ri 's#local/bin#local/bin:/application/redis/bin#g'     .bash_profile
 
 
 tar xf redis-6.2.1.tar.gz -C  /home/redis
-cd  redis-6.2.1.tar.gz
+cd  /home/redis
 make 
 cd src
 make install PREFIX=/application/redis
 cp  ../redis.conf  /data/redis/redis6379/conf
 
-配置文件:
-echo 'daemonize yes' >>  /data/redis/redis6379/conf/redis.conf
-echo  'logfile "/data/redis/redis6379/log/redis.log"'  >> /data/redis/redis6379/conf/redis.conf
-echo 'requirepass 123456'  >> /data/redis/redis6379/conf/redis.conf
 
-
-设置密码:
-CONFIG GET requirepass
-CONFIG SET  requirepass 123456
 
 
 ```
